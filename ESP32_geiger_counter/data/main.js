@@ -3,7 +3,7 @@
 */
 
 
-var endpoint = window.location.protocol + '//' + window.location.hostname + ":8080";
+var endpoint = window.location.protocol + '//' + window.location.hostname + "/data";
 var CpmChart=null;
 var itemCounts=0;
 var maxItemInGraph = 30;
