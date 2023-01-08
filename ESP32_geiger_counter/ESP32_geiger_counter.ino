@@ -20,7 +20,6 @@ unsigned long lastCountTime; // Time measurement
 int cpmArray[CPM_ARR_SIZE];
 int cpmArrUsage = 0;
 
-AsyncWebServer apiServer(8080); //json server
 AsyncWebServer httpServer(80); //html server
 
 void setup() {
@@ -52,11 +51,10 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(inputPin), GetEvent, FALLING); //funcition to be called when a pulse is sensed on pin from cajoe shield
   Serial.println("\n[  OK  ]\tGeiger counter started");
 
-  apiServer.begin();
   httpServer.begin();
 
   httpServer.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
-    request -> send(SPIFFS, "/index.html");
+    request->send(SPIFFS, "/index.html");
   });
   httpServer.on("/favicon.png", HTTP_GET, [](AsyncWebServerRequest * request) {
     request -> send(SPIFFS, "/favicon.png");
@@ -65,7 +63,7 @@ void setup() {
     request -> send(SPIFFS, "/main.js");
   });
 
-  apiServer.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
+  httpServer.on("/data", HTTP_GET, [](AsyncWebServerRequest * request) {
     request -> send(200, "application/json", "{ \"CPM\": " + String(cpm) + ", \"uSvH\": " + String(cpm * CONV_FACTOR) + "}");
   });
 
